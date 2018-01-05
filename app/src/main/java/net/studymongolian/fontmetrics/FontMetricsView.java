@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.View;
@@ -77,7 +78,7 @@ public class FontMetricsView extends View {
         super.onDraw(canvas);
 
         // center the text baseline vertically
-        int verticalAdjustment = this.getHeight()/2;
+        int verticalAdjustment = this.getHeight() * 2 / 3;
         canvas.translate(0, verticalAdjustment);
 
         float startX = getPaddingLeft();
@@ -164,9 +165,9 @@ public class FontMetricsView extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 
-        int width = 200;
-        int height = 200;
-
+        int width = getPaddingLeft() + getPaddingRight() + mBounds.width();
+        int height = getPaddingTop() + getPaddingBottom() + mBounds.height();
+/*
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
         int widthRequirement = MeasureSpec.getSize(widthMeasureSpec);
         if (widthMode == MeasureSpec.EXACTLY) {
@@ -182,7 +183,7 @@ public class FontMetricsView extends View {
         } else if (heightMode == MeasureSpec.AT_MOST && width > heightRequirement) {
             height = heightRequirement;
         }
-
+*/
         setMeasuredDimension(width, height);
     }
 
@@ -196,6 +197,12 @@ public class FontMetricsView extends View {
     }
     public float getMeasuredTextWidth() {
         return  mTextPaint.measureText(mText);
+    }
+
+    public void setFont(String fontPath) {
+        final Typeface typeFace = Typeface.createFromFile(fontPath);
+        if (typeFace != null)
+            mTextPaint.setTypeface(typeFace);
     }
 
     // setters
